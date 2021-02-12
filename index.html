@@ -1,12 +1,106 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>demo</title>
-  </head>
-  <body>
-    <div id="app1"></div>
-    <!-- built files will be auto injected -->
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>demo</title>
+  <script type="text/javascript" src="./static/js/vue.min.js"></script>
+  <style>
+    .class1{
+      background: #444;
+      color: #eee;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app"></div>
+  <div id="test">
+    <h1 >{{ text }}</h1>
+    <h1>{{ first() }}</h1>
+    {{5+5}}<br>
+    {{ text ? 'YES' : 'NO' }}<br>
+    {{ text.split('').join(',') }}
+  </div>
+  <div id = "test2">
+    <input type="checkbox" v-model="use" id="r1">
+    <div id ="test3" :class="{'class1': use}">
+      v-bind:class 指令
+    </div>
+    <h1 v-if="flag"><a @click="windows" :href="url">百度</a></h1>
+    <input v-model="url">
+
+    <h3>{{ url | joinStr}}</h3>
+
+    <div v-if="Math.random() > 0.5">
+      Sorry  
+    </div>
+    <div v-else>
+      Not sorry
+    </div>
+    <ol>
+      <li v-for="data in arrays">
+        {{data}}
+      </li>
+    </ol>
+
+    <p>计数器 {{counter}}</p>
+    <button @click="counter++">加一</button>
+
+    <test1></test1>
+
+    <cmm1></cmm1>
+  </div>
+</body>
+<script type="text/javascript">
+  Vue.component("test1",{
+    template: '<p>这是一个全局组件，需要在头部声明！！<p>'
+  });
+
+  var Child = '<p>这是一个局部组件，在根实例里注册，只有注册过的实例才能使用</p>';
+
+  var data = {text: "开始", site : "VUE"}
+  var vm = new Vue({
+    el: '#test',
+    data: data,
+    methods: {
+      first: function () {
+        return data.site;
+      }
+    }
+  })
+
+  data.site="vue";
+  // alert(data.site);
+ var vm1 = new Vue({
+    el: '#test2',
+    components:{
+      'cmm1':Child
+    },
+    data:{ 
+      use: false,
+      flag: true,
+      url: "www.baidu.cn",
+      arrays: ["1","2","3"],
+      counter: 1
+    },
+    methods: {
+      windows(){
+        alert(this.url);
+      }
+    },
+    filters: {
+      joinStr(value){
+        return value.replace("baidu","cmm1");
+      }
+    }
+  });
+  vm1.$watch('counter',function(nval,oval){
+    alert('计数器值的变化 :' + oval + ' 变为 ' + nval + '!');
+  });
+
+
+</script>
+
 </html>
