@@ -50,7 +50,10 @@
 
     <test1></test1>
 
-    <cmm1></cmm1>
+    <cmm></cmm>
+
+    <input v-model="parentMsg"> <br>
+    <child :message = "parentMsg"></child>
   </div>
 </body>
 <script type="text/javascript">
@@ -58,8 +61,15 @@
     template: '<p>这是一个全局组件，需要在头部声明！！<p>'
   });
 
-  var Child = '<p>这是一个局部组件，在根实例里注册，只有注册过的实例才能使用</p>';
+  var Child = {
+    template : '<p>这是一个局部组件，在根实例里注册，只有注册过的实例才能使用</p>!!'
+  }
 
+
+  var Child1 = {
+    props: ['message'],
+    template: '<span>{{ message }}</span>'
+  }
   var data = {text: "开始", site : "VUE"}
   var vm = new Vue({
     el: '#test',
@@ -76,14 +86,16 @@
  var vm1 = new Vue({
     el: '#test2',
     components:{
-      'cmm1':Child
+      'cmm':Child,
+      'child':Child1
     },
     data:{ 
       use: false,
       flag: true,
       url: "www.baidu.cn",
       arrays: ["1","2","3"],
-      counter: 1
+      counter: 1,
+      parentMsg: '父组件内容'
     },
     methods: {
       windows(){
